@@ -50,7 +50,7 @@ class Secure_Form_Handler {
     public static function display_recaptcha_form() {
         ?>
         <div class="wrap">
-            <h1>Secure Form with reCAPTCHA v2 Checkbox</h1>
+            <h1>Secure Form with reCAPTCHA v3 Checkbox</h1>
             <p>This form demonstrates secure data handling with nonce validation, input sanitization, prepared statements, and reCAPTCHA v2 checkbox protection.</p>
 
             <form id="wpsfd-recaptcha-form" method="post">
