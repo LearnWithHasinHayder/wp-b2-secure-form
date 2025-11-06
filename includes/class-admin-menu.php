@@ -34,6 +34,15 @@ class Admin_Menu {
 
         add_submenu_page(
             'wp-secure-forms-demo',
+            'Secure Form with reCAPTCHA',
+            'Secure Form + reCAPTCHA v2',
+            'manage_options',
+            'wp-secure-forms-demo-recaptcha',
+            [Secure_Form_Handler::class, 'display_recaptcha_form']
+        );
+
+        add_submenu_page(
+            'wp-secure-forms-demo',
             'Insecure Form',
             'Insecure Form',
             'manage_options',
@@ -72,6 +81,7 @@ class Admin_Menu {
             <h2>Available Demos</h2>
             <ul>
                 <li><a href="<?php echo admin_url('admin.php?page=wp-secure-forms-demo-secure'); ?>">Secure Form</a> - Demonstrates proper nonce validation, input sanitization, and prepared statements.</li>
+                <li><a href="<?php echo admin_url('admin.php?page=wp-secure-forms-demo-recaptcha'); ?>">Secure Form + reCAPTCHA v2</a> - Secure form with Google reCAPTCHA v2 checkbox protection against bots.</li>
                 <li><a href="<?php echo admin_url('admin.php?page=wp-secure-forms-demo-insecure'); ?>">Insecure Form</a> - Shows dangerous practices like raw SQL and no validation (for educational purposes only).</li>
                 <li><a href="<?php echo admin_url('admin.php?page=wp-secure-forms-demo-upload'); ?>">File Upload</a> - Safe file upload with type and size validation.</li>
                 <li><a href="<?php echo admin_url('admin.php?page=wp-secure-forms-demo-submissions'); ?>">Submissions Viewer</a> - View all form submissions and uploaded files.</li>
@@ -80,6 +90,7 @@ class Admin_Menu {
             <h2>Demo Instructions</h2>
             <ol>
                 <li>Try submitting both forms with normal data and malicious input (e.g., &lt;script&gt; tags, SQL injection attempts).</li>
+                <li>Test the reCAPTCHA form to see bot protection in action.</li>
                 <li>Check the Submissions Viewer to see how data is stored differently.</li>
                 <li>Use phpMyAdmin to inspect the database tables directly.</li>
                 <li>Observe how the secure form prevents attacks while the insecure form allows them.</li>

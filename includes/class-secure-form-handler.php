@@ -10,15 +10,15 @@ namespace WPSFD;
 class Secure_Form_Handler {
 
     /**
-     * Display the secure form.
+     * Display the secure form with reCAPTCHA.
      */
-    public static function display_form() {
+    public static function display_recaptcha_form() {
         ?>
         <div class="wrap">
-            <h1>Secure Form Demo</h1>
-            <p>This form demonstrates secure data handling with nonce validation, input sanitization, and prepared statements.</p>
+            <h1>Secure Form with reCAPTCHA v2 Checkbox</h1>
+            <p>This form demonstrates secure data handling with nonce validation, input sanitization, prepared statements, and reCAPTCHA v2 checkbox protection.</p>
 
-            <form id="wpsfd-secure-form" method="post">
+            <form id="wpsfd-recaptcha-form" method="post">
                 <?php wp_nonce_field('wpsfd_secure_submit', 'wpsfd_secure_nonce'); ?>
                 <table class="form-table">
                     <tr>
@@ -33,13 +33,19 @@ class Secure_Form_Handler {
                         <th><label for="message">Message</label></th>
                         <td><textarea id="message" name="message" rows="5" required></textarea></td>
                     </tr>
+                    <tr>
+                        <th><label for="recaptcha">reCAPTCHA</label></th>
+                        <td>
+                            <div class="g-recaptcha" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"></div>
+                        </td>
+                    </tr>
                 </table>
                 <p class="submit">
-                    <input type="submit" class="button button-primary" value="Submit Securely">
+                    <input type="submit" class="button button-primary" value="Submit Securely with reCAPTCHA">
                 </p>
             </form>
 
-            <div id="wpsfd-secure-response"></div>
+            <div id="wpsfd-recaptcha-response"></div>
         </div>
         <?php
     }
@@ -51,6 +57,29 @@ class Secure_Form_Handler {
         // Check nonce for security
         if (!wp_verify_nonce($_POST['wpsfd_secure_nonce'], 'wpsfd_secure_submit')) {
             wp_send_json_error(['message' => 'Security check failed.']);
+        }
+
+        // Verify reCAPTCHA if token is provided
+        if (isset($_POST['recaptcha_token'])) {
+            $recaptcha_secret = '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe'; // Test secret key
+            $response = wp_remote_post('https://www.google.com/recaptcha/api/siteverify', [
+                'body' => [
+                    'secret' => $recaptcha_secret,
+                    'response' => $_POST['recaptcha_token'],
+                    'remoteip' => $_SERVER['REMOTE_ADDR']
+                ]
+            ]);
+
+            if (is_wp_error($response)) {
+                wp_send_json_error(['message' => 'reCAPTCHA verification failed.']);
+            }
+
+            $body = wp_remote_retrieve_body($response);
+            $result = json_decode($body, true);
+
+            if (!$result['success']) {
+                wp_send_json_error(['message' => 'reCAPTCHA verification failed. Please try again.']);
+            }
         }
 
         // Sanitize inputs

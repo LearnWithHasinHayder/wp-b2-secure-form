@@ -34,6 +34,43 @@ jQuery(document).ready(function($) {
         });
     });
 
+    // Secure form with reCAPTCHA submission
+    $('#wpsfd-recaptcha-form').on('submit', function(e) {
+        e.preventDefault();
+
+        var recaptchaResponse = grecaptcha.getResponse();
+        if (!recaptchaResponse) {
+            $('#wpsfd-recaptcha-response').html('<div class="notice notice-error"><p>Please complete the reCAPTCHA verification.</p></div>');
+            return;
+        }
+
+        var formData = new FormData(this);
+        formData.append('action', 'wpsfd_secure_submit');
+        formData.append('wpsfd_secure_nonce', wpsfd_ajax.secure_nonce);
+        formData.append('recaptcha_token', recaptchaResponse);
+
+        $.ajax({
+            url: wpsfd_ajax.ajax_url,
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                if (response.success) {
+                    $('#wpsfd-recaptcha-response').html('<div class="notice notice-success"><p>' + response.data.message + '</p></div>');
+                    $('#wpsfd-recaptcha-form')[0].reset();
+                    grecaptcha.reset(); // Reset reCAPTCHA
+                } else {
+                    $('#wpsfd-recaptcha-response').html('<div class="notice notice-error"><p>' + response.data.message + '</p></div>');
+                    grecaptcha.reset(); // Reset reCAPTCHA on error
+                }
+            },
+            error: function() {
+                $('#wpsfd-recaptcha-response').html('<div class="notice notice-error"><p>AJAX error occurred.</p></div>');
+            }
+        });
+    });
+
     // Insecure form submission
     $('#wpsfd-insecure-form').on('submit', function(e) {
         e.preventDefault();

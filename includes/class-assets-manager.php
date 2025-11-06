@@ -20,10 +20,22 @@ class Assets_Manager {
             'wp-secure-demo_page_wp-secure-forms-demo-insecure',
             'wp-secure-demo_page_wp-secure-forms-demo-upload',
             'wp-secure-demo_page_wp-secure-forms-demo-submissions',
+            'wp-secure-demo_page_wp-secure-forms-demo-recaptcha',
         ];
 
         if (!in_array($hook, $plugin_pages)) {
             return;
+        }
+
+        // Enqueue reCAPTCHA script for reCAPTCHA form
+        if ($hook === 'wp-secure-demo_page_wp-secure-forms-demo-recaptcha') {
+            wp_enqueue_script(
+                'recaptcha',
+                'https://www.google.com/recaptcha/api.js', // v2 script
+                [],
+                null,
+                true
+            );
         }
 
         // Enqueue CSS
