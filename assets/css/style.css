@@ -1,0 +1,52 @@
+/**
+ * WP Secure Forms Demo Styles
+ */
+
+#wpsfd-secure-form,
+#wpsfd-insecure-form,
+#wpsfd-upload-form {
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    border-radius: 4px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+#wpsfd-secure-response,
+#wpsfd-insecure-response,
+#wpsfd-upload-response {
+    margin-top: 20px;
+}
+
+.notice {
+    padding: 10px 15px;
+    margin: 0;
+    border-left: 4px solid;
+}
+
+.notice-success {
+    border-left-color: #46b450;
+    background-color: #dff0d8;
+    color: #3c763d;
+}
+
+.notice-error {
+    border-left-color: #dc3232;
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.form-table th {
+    width: 150px;
+}
+
+.form-table input[type="text"],
+.form-table input[type="email"],
+.form-table textarea {
+    width: 100%;
+    max-width: 400px;
+}
+
+.form-table textarea {
+    resize: vertical;
+}
