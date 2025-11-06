@@ -51,7 +51,7 @@ class Secure_Form_Handler {
         ?>
         <div class="wrap">
             <h1>Secure Form with reCAPTCHA v3 Checkbox</h1>
-            <p>This form demonstrates secure data handling with nonce validation, input sanitization, prepared statements, and reCAPTCHA v2 checkbox protection.</p>
+            <p>This form demonstrates secure data handling with nonce validation, input sanitization, prepared statements, and reCAPTCHA v3 checkbox protection.</p>
 
             <form id="wpsfd-recaptcha-form" method="post">
                 <?php wp_nonce_field('wpsfd_secure_submit', 'wpsfd_secure_nonce'); ?>
