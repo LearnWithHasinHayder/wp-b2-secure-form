@@ -92,6 +92,29 @@ class Admin_Menu {
      * Display submissions and uploads.
      */
     public static function display_submissions() {
+        // Handle single delete
+        if (isset($_POST['delete_submission']) && isset($_POST['submission_id'])) {
+            if (!wp_verify_nonce($_POST['_wpnonce'], 'delete_submission_' . $_POST['submission_id'])) {
+                wp_die('Security check failed.');
+            }
+            if (Database_Manager::delete_submission(intval($_POST['submission_id']))) {
+                echo '<div class="notice notice-success"><p>Submission deleted successfully.</p></div>';
+            } else {
+                echo '<div class="notice notice-error"><p>Failed to delete submission.</p></div>';
+            }
+        }
+
+        if (isset($_POST['delete_upload']) && isset($_POST['upload_id'])) {
+            if (!wp_verify_nonce($_POST['_wpnonce'], 'delete_upload_' . $_POST['upload_id'])) {
+                wp_die('Security check failed.');
+            }
+            if (Database_Manager::delete_upload(intval($_POST['upload_id']))) {
+                echo '<div class="notice notice-success"><p>Upload deleted successfully.</p></div>';
+            } else {
+                echo '<div class="notice notice-error"><p>Failed to delete upload.</p></div>';
+            }
+        }
+
         $submissions = Database_Manager::get_all_submissions();
         $uploads = Database_Manager::get_all_uploads();
         ?>
@@ -108,11 +131,12 @@ class Admin_Menu {
                         <th>Message</th>
                         <th>Secure?</th>
                         <th>Submitted At</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php if (empty($submissions)): ?>
-                        <tr><td colspan="6">No submissions yet.</td></tr>
+                        <tr><td colspan="7">No submissions yet.</td></tr>
                     <?php else: ?>
                         <?php foreach ($submissions as $submission): ?>
                             <tr>
@@ -122,6 +146,13 @@ class Admin_Menu {
                                 <td><?php echo esc_html($submission['message']); ?></td>
                                 <td><?php echo $submission['is_secure'] ? 'Yes' : 'No'; ?></td>
                                 <td><?php echo esc_html($submission['created_at']); ?></td>
+                                <td>
+                                    <form method="post" style="display: inline;">
+                                        <?php wp_nonce_field('delete_submission_' . $submission['id']); ?>
+                                        <input type="hidden" name="submission_id" value="<?php echo esc_attr($submission['id']); ?>">
+                                        <input type="submit" name="delete_submission" value="Delete" class="button button-small" onclick="return confirm('Are you sure you want to delete this submission?');">
+                                    </form>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                     <?php endif; ?>
@@ -139,11 +170,12 @@ class Admin_Menu {
                         <th>File Size</th>
                         <th>File Type</th>
                         <th>Uploaded At</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php if (empty($uploads)): ?>
-                        <tr><td colspan="7">No uploads yet.</td></tr>
+                        <tr><td colspan="8">No uploads yet.</td></tr>
                     <?php else: ?>
                         <?php foreach ($uploads as $upload): ?>
                             <tr>
@@ -154,6 +186,13 @@ class Admin_Menu {
                                 <td><?php echo esc_html($upload['file_size']); ?> bytes</td>
                                 <td><?php echo esc_html($upload['file_type']); ?></td>
                                 <td><?php echo esc_html($upload['uploaded_at']); ?></td>
+                                <td>
+                                    <form method="post" style="display: inline;">
+                                        <?php wp_nonce_field('delete_upload_' . $upload['id']); ?>
+                                        <input type="hidden" name="upload_id" value="<?php echo esc_attr($upload['id']); ?>">
+                                        <input type="submit" name="delete_upload" value="Delete" class="button button-small" onclick="return confirm('Are you sure you want to delete this upload?');">
+                                    </form>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                     <?php endif; ?>

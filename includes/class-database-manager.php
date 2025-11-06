@@ -137,4 +137,38 @@ class Database_Manager {
 
         return $wpdb->get_results("SELECT * FROM $table ORDER BY uploaded_at DESC", ARRAY_A);
     }
+
+    /**
+     * Delete a submission by ID.
+     *
+     * @param int $id Submission ID.
+     * @return bool True on success, false on failure.
+     */
+    public static function delete_submission($id) {
+        global $wpdb;
+
+        $table = $wpdb->prefix . self::SUBMISSIONS_TABLE;
+
+        return $wpdb->delete($table, ['id' => $id], ['%d']) !== false;
+    }
+
+    /**
+     * Delete an upload by ID.
+     *
+     * @param int $id Upload ID.
+     * @return bool True on success, false on failure.
+     */
+    public static function delete_upload($id) {
+        global $wpdb;
+
+        $table = $wpdb->prefix . self::UPLOADS_TABLE;
+
+        // Get file path to delete the file as well
+        $upload = $wpdb->get_row($wpdb->prepare("SELECT file_path FROM $table WHERE id = %d", $id), ARRAY_A);
+        if ($upload && file_exists($upload['file_path'])) {
+            unlink($upload['file_path']);
+        }
+
+        return $wpdb->delete($table, ['id' => $id], ['%d']) !== false;
+    }
 }
