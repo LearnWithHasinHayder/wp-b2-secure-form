@@ -14,37 +14,51 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-// Define plugin constants
+// Define plugin constants for backward compatibility
 define('WPSFD_VERSION', '1.0.0');
-define('WPSFD_PLUGIN_DIR', plugin_dir_path(__FILE__));
+define('WPSFD_PLUGIN_DIR', __DIR__);
 define('WPSFD_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('WPSFD_PLUGIN_BASENAME', plugin_basename(__FILE__));
 
-// Autoloader for plugin classes
-spl_autoload_register(function ($class_name) {
-    if (strpos($class_name, 'WPSFD\\') === 0) {
-        $class_name = str_replace('WPSFD\\', '', $class_name);
-        $class_name = str_replace('\\', '/', $class_name);
-        $class_name = str_replace('_', '-', $class_name);
-        $file_path = WPSFD_PLUGIN_DIR . 'includes/class-' . strtolower($class_name) . '.php';
-        if (file_exists($file_path)) {
-            require_once $file_path;
-        }
+/**
+ * Main Plugin Class
+ *
+ * Handles plugin initialization and activation.
+ */
+class WP_Secure_Forms_Demo {
+
+    /**
+     * Initialize the plugin
+     */
+    public static function init() {
+        // Load the Plugin_Loader class manually first
+        require_once WPSFD_PLUGIN_DIR . '/includes/class-plugin-loader.php';
+
+        // Register activation hook
+        register_activation_hook(__FILE__, [self::class, 'activate']);
+
+        // Initialize plugin on plugins_loaded
+        add_action('plugins_loaded', [self::class, 'load']);
     }
-});
 
-// Activation hook
-register_activation_hook(__FILE__, 'wpsfd_activate_plugin');
+    /**
+     * Plugin activation hook
+     */
+    public static function activate() {
+        // Load Database_Manager class for activation
+        require_once WPSFD_PLUGIN_DIR . '/includes/class-database-manager.php';
+        // Create database tables
+        WPSFD\Database_Manager::create_tables();
+    }
 
-function wpsfd_activate_plugin() {
-    // Create database tables
-    WPSFD\Database_Manager::create_tables();
+    /**
+     * Load the plugin
+     */
+    public static function load() {
+        $plugin_loader = new WPSFD\Plugin_Loader();
+        $plugin_loader->init();
+    }
 }
 
 // Initialize the plugin
-function wpsfd_init_plugin() {
-    $plugin_loader = new WPSFD\Plugin_Loader();
-    $plugin_loader->init();
-}
-
-add_action('plugins_loaded', 'wpsfd_init_plugin');
+WP_Secure_Forms_Demo::init();
