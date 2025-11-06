@@ -10,6 +10,41 @@ namespace WPSFD;
 class Secure_Form_Handler {
 
     /**
+     * Display the secure form.
+     */
+    public static function display_form() {
+        ?>
+        <div class="wrap">
+            <h1>Secure Form</h1>
+            <p>This form demonstrates secure data handling with nonce validation, input sanitization, and prepared statements.</p>
+
+            <form id="wpsfd-secure-form" method="post">
+                <?php wp_nonce_field('wpsfd_secure_submit', 'wpsfd_secure_nonce'); ?>
+                <table class="form-table">
+                    <tr>
+                        <th><label for="name">Name</label></th>
+                        <td><input type="text" id="name" name="name" required></td>
+                    </tr>
+                    <tr>
+                        <th><label for="email">Email</label></th>
+                        <td><input type="email" id="email" name="email" required></td>
+                    </tr>
+                    <tr>
+                        <th><label for="message">Message</label></th>
+                        <td><textarea id="message" name="message" rows="5" required></textarea></td>
+                    </tr>
+                </table>
+                <p class="submit">
+                    <input type="submit" class="button button-primary" value="Submit Securely">
+                </p>
+            </form>
+
+            <div id="wpsfd-secure-response"></div>
+        </div>
+        <?php
+    }
+
+    /**
      * Display the secure form with reCAPTCHA.
      */
     public static function display_recaptcha_form() {
