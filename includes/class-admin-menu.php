@@ -35,7 +35,7 @@ class Admin_Menu {
         add_submenu_page(
             'wp-secure-forms-demo',
             'Secure Form with reCAPTCHA',
-            'Secure Form + reCAPTCHA v2',
+            'Secure Form + reCAPTCHA v3',
             'manage_options',
             'wp-secure-forms-demo-recaptcha',
             [Secure_Form_Handler::class, 'display_recaptcha_form']
@@ -81,7 +81,7 @@ class Admin_Menu {
             <h2>Available Demos</h2>
             <ul>
                 <li><a href="<?php echo admin_url('admin.php?page=wp-secure-forms-demo-secure'); ?>">Secure Form</a> - Demonstrates proper nonce validation, input sanitization, and prepared statements.</li>
-                <li><a href="<?php echo admin_url('admin.php?page=wp-secure-forms-demo-recaptcha'); ?>">Secure Form + reCAPTCHA v2</a> - Secure form with Google reCAPTCHA v2 checkbox protection against bots.</li>
+                <li><a href="<?php echo admin_url('admin.php?page=wp-secure-forms-demo-recaptcha'); ?>">Secure Form + reCAPTCHA v3</a> - Secure form with Google reCAPTCHA v3 checkbox protection against bots.</li>
                 <li><a href="<?php echo admin_url('admin.php?page=wp-secure-forms-demo-insecure'); ?>">Insecure Form</a> - Shows dangerous practices like raw SQL and no validation (for educational purposes only).</li>
                 <li><a href="<?php echo admin_url('admin.php?page=wp-secure-forms-demo-upload'); ?>">File Upload</a> - Safe file upload with type and size validation.</li>
                 <li><a href="<?php echo admin_url('admin.php?page=wp-secure-forms-demo-submissions'); ?>">Submissions Viewer</a> - View all form submissions and uploaded files.</li>
