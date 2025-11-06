@@ -25,12 +25,12 @@ class Plugin_Loader {
      */
     private function load_classes() {
         // Load class files individually
-        require_once WPSFD_PLUGIN_DIR . 'includes/class-database-manager.php';
-        require_once WPSFD_PLUGIN_DIR . 'includes/class-secure-form-handler.php';
-        require_once WPSFD_PLUGIN_DIR . 'includes/class-insecure-form-handler.php';
-        require_once WPSFD_PLUGIN_DIR . 'includes/class-file-upload-handler.php';
-        require_once WPSFD_PLUGIN_DIR . 'includes/class-admin-menu.php';
-        require_once WPSFD_PLUGIN_DIR . 'includes/class-assets-manager.php';
+        require_once WPSFD_PLUGIN_DIR . '/includes/class-database-manager.php';
+        require_once WPSFD_PLUGIN_DIR . '/includes/class-secure-form-handler.php';
+        require_once WPSFD_PLUGIN_DIR . '/includes/class-insecure-form-handler.php';
+        require_once WPSFD_PLUGIN_DIR . '/includes/class-file-upload-handler.php';
+        require_once WPSFD_PLUGIN_DIR . '/includes/class-admin-menu.php';
+        require_once WPSFD_PLUGIN_DIR . '/includes/class-assets-manager.php';
 
         // Instantiate classes if needed
         new Database_Manager();
