@@ -57,7 +57,7 @@ class Plugin_Loader {
         add_action('wp_ajax_wpsfd_upload_file', [File_Upload_Handler::class, 'handle_ajax_upload']);
 
         // Admin post handlers for deletes
-        add_action('admin_post_delete_submission', [Admin_Menu::class, 'handle_delete_submission']);
-        add_action('admin_post_delete_upload', [Admin_Menu::class, 'handle_delete_upload']);
+        // add_action('admin_post_delete_submission', [Admin_Menu::class, 'handle_delete_submission']);
+        // add_action('admin_post_delete_upload', [Admin_Menu::class, 'handle_delete_upload']);
     }
 }

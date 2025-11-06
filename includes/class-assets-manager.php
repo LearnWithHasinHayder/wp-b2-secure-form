@@ -31,7 +31,7 @@ class Assets_Manager {
         if ($hook === 'wp-secure-demo_page_wp-secure-forms-demo-recaptcha') {
             wp_enqueue_script(
                 'recaptcha',
-                'https://www.google.com/recaptcha/api.js', // v2 script
+                'https://www.google.com/recaptcha/api.js', // v3 script
                 [],
                 null,
                 true
